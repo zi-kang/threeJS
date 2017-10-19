@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Light Properties</title>
+    <style>
+        body {
+            /* set margin to 0 and overflow to hidden, to go fullscreen */
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+<div id="Stats-output"></div>
+<!-- Div which will hold the Output -->
+<div id="WebGL-output"></div>
+<script type="text/javascript" src="../libs/jquery-1.9.0.js"></script>
+<script type="text/javascript" src="../libs/three.js"></script>
+<script type="text/javascript" src="../libs/stats.js"></script>
+<script type="text/javascript" src="../libs/dat.gui.js"></script>
+<script type="text/javascript">
+    $(function(){
+        var scene = new THREE.Scene(),
+            camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000),
+            renderer = new THREE.WebGLRenderer(),
+            stats = initStats();
+
+        scene.fog = new THREE.Fog(0xaaaaaa, 0.010, 200);
+
+        renderer.setClearColor(new THREE.Color(0xaaaaff, 1.0));
+        renderer.setSize(window.innerWidth, window.innerHeight);
+        renderer.shadowMap.enabled = true;
+
+        var textureGrass = THREE.ImageUtils.loadTexture("../assets/textures/ground/grasslight-big.jpg");
+        textureGrass.wrapS = THREE.RepeatWrapping;
+        textureGrass.wrapT = THREE.RepeatWrapping;
+        textureGrass.repeat.set(4, 4);
+
+        var planeGeometry = new THREE.PlaneGeometry(1000, 200, 20, 20),
+            planeMaterial = new THREE.MeshLambertMaterial({map: textureGrass}),
+            plane = new THREE.Mesh(planeGeometry, planeMaterial);
+        plane.receiveShadow = true;
+        // rotate and position the plane
+        plane.rotation.x = -0.5 * Math.PI;
+        plane.position.x = 15;
+        plane.position.y = 0;
+        plane.position.z = 0;
+        // add the plane to the scene
+        scene.add(plane);
+
+
+
+
+
+
+
+        function initStats() {
+            var stats = new Stats();
+            stats.setMode(0); // 0: fps, 1: ms
+            // Align top-left
+            stats.domElement.style.position = 'absolute';
+            stats.domElement.style.left = '0px';
+            stats.domElement.style.top = '0px';
+            $("#Stats-output").append(stats.domElement);
+            return stats;
+        }
+
+    });
+</script>
+</body>
+</html>
