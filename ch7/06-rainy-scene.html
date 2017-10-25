@@ -65,8 +65,15 @@
             this.sizeAttenuation = true;
 
             this.redraw = function () {
-                scene.remove(scene.getObjectByName("particles1"));
-                scene.remove(scene.getObjectByName("particles2"));
+                var toRemove = [];
+                scene.children.forEach(function (child) {
+                    if (child instanceof THREE.PointCloud) {
+                        toRemove.push(child);
+                    }
+                });
+                toRemove.forEach(function (child) {
+                    scene.remove(child)
+                });
 
                 createPointCloud(controls.size, controls.transparent, controls.opacity, controls.sizeAttenuation, controls.color);
             };
